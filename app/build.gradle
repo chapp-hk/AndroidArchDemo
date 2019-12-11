@@ -1,0 +1,156 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-allopen'
+
+apply plugin: 'androidx.navigation.safeargs'
+
+def versionPatch = new Properties()
+file("../version.patch.properties").withInputStream { versionPatch.load(it) }
+
+def versionNameString = "${buildVersions.version}.${buildVersions.version_code - 1}.${versionPatch["VERSION_PATCH"]}"
+
+android {
+    compileSdkVersion buildVersions.compiled_sdk
+
+    signingConfigs {
+        debug {
+            storeFile file(keystore.debug)
+        }
+        release {
+            keyAlias keystore.alias
+            keyPassword keystore.password
+            storeFile file(keystore.release)
+            storePassword keystore.password
+        }
+    }
+
+    defaultConfig {
+        applicationId "ch.app.archdemo"
+        minSdkVersion buildVersions.min_sdk
+        targetSdkVersion buildVersions.target_sdk
+        versionCode buildVersions.version_code
+        versionName versionNameString
+        testInstrumentationRunner applicationId + ".arch.TestJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        dataBinding.enabled = true
+
+        buildConfigField "String", "BASE_URL", "\"${config.baseurl}\""
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+        }
+    }
+
+    testOptions {
+        animationsDisabled true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}
+
+allOpen {
+    // allows mocking for classes w/o directly opening them for release builds
+    annotation 'ch.app.archdemo.arch.util.OpenClass'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+
+    implementation deps.kotlin.stdlib
+
+    //android support
+    implementation deps.support.appcompat
+    implementation deps.support.core_ktx
+    implementation deps.support.fragment
+    implementation deps.support.constraint_layout
+
+    //navigation
+    implementation deps.navigation.fragment
+    implementation deps.navigation.ui
+
+    //dagger
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_processor
+
+    //rx
+    implementation deps.rx.android
+    implementation deps.rx.java
+    implementation deps.rx.kotlin
+
+    //retrofit
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.adapter_rxjava2
+    implementation deps.retrofit.moshi_converter
+    implementation deps.okhttp.logging_interceptor
+
+    //moshi
+    implementation deps.moshi.core
+    kapt deps.moshi.codegen
+
+    //room
+    implementation deps.room.runtime
+    implementation deps.room.rxjava2
+    kapt deps.room.compiler
+
+    //paging
+    implementation deps.paging.runtime
+    implementation deps.paging.rxjava
+
+    //fresco
+    implementation deps.fresco.runtime
+
+    //recyclerview divider
+    implementation deps.recyclerview.divider
+
+    //timber
+    implementation deps.timber.runtime
+
+    //test
+    testImplementation deps.test.mockk
+    testImplementation deps.test.junit
+    testImplementation deps.test.android_arch_core
+
+    //android test
+    androidTestImplementation deps.mockito.core
+    androidTestImplementation deps.mockito.android
+    androidTestImplementation deps.mockito.kotlin
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.espresso.contrib
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation deps.support.fragment_testing
+    androidTestImplementation deps.okhttp.mockwebserver
+    kaptAndroidTest deps.dagger.compiler
+}

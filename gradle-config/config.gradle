@@ -1,0 +1,2 @@
+ext.config = [:]
+ext.config.baseurl = "https://raw.githubusercontent.com/chapp-hk/AndroidArchDemo/master/mockapi/"

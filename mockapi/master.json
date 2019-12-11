@@ -1,0 +1,14 @@
+[
+  {
+    "name" : "All",
+    "data" : "https://raw.githubusercontent.com/chapp-hk/AndroidArchDemo/master/mockapi/all.json"
+  },
+  {
+    "name" : "Men",
+    "data" : "https://raw.githubusercontent.com/chapp-hk/AndroidArchDemo/master/mockapi/men.json"
+  },
+  {
+    "name" : "Women",
+    "data" : "https://raw.githubusercontent.com/chapp-hk/AndroidArchDemo/master/mockapi/women.json"
+  }
+]

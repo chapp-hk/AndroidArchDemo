@@ -1,0 +1,65 @@
+image: chapp/android-ci:emulator
+
+variables:
+  ANDROID_COMPILE_SDK: "29"
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - chmod +x ./gradlew
+
+stages:
+  - test
+  - build
+
+cache:
+  key: "$CI_COMMIT_REF_NAME"
+  paths:
+    - .gradle/
+
+unitTestDebug:
+  stage: test
+  only:
+    - master
+  script:
+    - echo "VERSION_PATCH=$CI_PIPELINE_ID" > version.patch.properties
+    - ./gradlew testDebug
+  artifacts:
+    paths:
+      - app/build/reports/tests/testDebugUnitTest
+      - data/build/reports/tests/testDebugUnitTest
+      - domain/build/reports/tests/testDebugUnitTest
+
+buildDebug:
+  stage: build
+  only:
+    - master
+  script:
+    - echo "VERSION_PATCH=$CI_PIPELINE_ID" > version.patch.properties
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - app/build/outputs/apk/
+
+unitTestRelease:
+  stage: test
+  only:
+    - tags
+  script:
+    - echo "VERSION_PATCH=$CI_PIPELINE_ID" > version.patch.properties
+    - ./gradlew testRelease
+  artifacts:
+    paths:
+      - app/build/reports/tests/testReleaseUnitTest
+      - data/build/reports/tests/testReleaseUnitTest
+      - gms/build/reports/tests/testReleaseUnitTest
+
+buildRelease:
+  stage: build
+  only:
+    - tags
+  script:
+    - echo "VERSION_PATCH=$CI_PIPELINE_ID" > version.patch.properties
+    - ./gradlew assembleRelease
+  artifacts:
+    paths:
+      - app/build/outputs/

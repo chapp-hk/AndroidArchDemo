@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#DB0216</color>
+    <color name="colorPrimaryDark">#DB0216</color>
+    <color name="colorAccent">#80C7FD</color>
+
+    <color name="ic_launcher_background">#DB0216</color>
+    <color name="launcherFragmentBackground">#FFFFFF</color>
+    <color name="fragmentBackground">#EEEEEE</color>
+    <color name="imageBackground">#DDDDDD</color>
+    <color name="itemBackground">#FFFFFF</color>
+    <color name="titleText">#FFFFFF</color>
+</resources>

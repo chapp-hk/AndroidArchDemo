@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion buildVersions.compiled_sdk
+
+    defaultConfig {
+        minSdkVersion buildVersions.min_sdk
+        targetSdkVersion buildVersions.target_sdk
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    implementation deps.kotlin.stdlib
+
+    //dagger
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+    kapt deps.dagger.compiler
+    kapt deps.dagger.android_processor
+
+    //retrofit
+    implementation deps.retrofit.moshi_converter
+
+    //moshi
+    implementation deps.moshi.core
+    kapt deps.moshi.codegen
+
+    //rx
+    implementation deps.rx.android
+    implementation deps.rx.java
+    implementation deps.rx.kotlin
+
+    //room
+    implementation deps.room.runtime
+    implementation deps.room.rxjava2
+    kapt deps.room.compiler
+
+    //test
+    testImplementation deps.test.mockk
+    testImplementation deps.test.junit
+}

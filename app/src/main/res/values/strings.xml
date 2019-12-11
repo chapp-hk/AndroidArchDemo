@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Arch Demo</string>
+    <string name="price_format">$%s</string>
+    <string name="launcher_error_message">Network error\nPress to retry</string>
+</resources>

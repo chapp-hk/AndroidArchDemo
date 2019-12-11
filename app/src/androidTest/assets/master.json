@@ -1,0 +1,14 @@
+[
+  {
+    "name": "All",
+    "data": "http://localhost:8080/m-et/Android/json/all.json"
+  },
+  {
+    "name": "Men",
+    "data": "http://localhost:8080/m-et/Android/json/men.json"
+  },
+  {
+    "name": "Women",
+    "data": "http://localhost:8080/m-et/Android/json/women.json"
+  }
+]

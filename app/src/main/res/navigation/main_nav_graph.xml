@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/launcher">
+
+    <fragment
+        android:id="@+id/launcher"
+        android:name="ch.app.archdemo.app.launcher.LauncherFragment"
+        android:label="LauncherFragment"
+        tools:layout="@layout/launcher_fragment">
+        <action
+            android:id="@+id/action_launcher_to_timelinePager"
+            app:destination="@id/timelinePager"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/launcher"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/timelinePager"
+        android:name="ch.app.archdemo.app.timeline.pager.TimelinePagerFragment"
+        android:label="TimelinePagerFragment"
+        tools:layout="@layout/timeline_pager_fragment">
+        <argument
+            android:name="masterList"
+            app:argType="ch.app.domain.master.MasterModel[]" />
+    </fragment>
+</navigation>

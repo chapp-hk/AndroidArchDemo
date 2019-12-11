@@ -1,0 +1,33 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    apply from: 'gradle-config/repos.gradle'
+    apply from: 'gradle-config/versions.gradle'
+    apply from: 'gradle-config/dependencies.gradle'
+    apply from: 'gradle-config/config.gradle'
+    apply from: 'gradle-config/keystore.gradle'
+
+    addRepos(repositories)
+
+    dependencies {
+        //android plugins
+        classpath deps.android.gradle_plugin
+        classpath deps.kotlin.gradle_plugin
+        classpath deps.kotlin.all_open
+
+        classpath deps.navigation.safe_args_gradle_plugin
+
+        classpath deps.latestversion.check
+        classpath deps.latestversion.use
+    }
+}
+
+allprojects {
+    addRepos(repositories)
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'se.patrikerdes.use-latest-versions'
